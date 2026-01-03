@@ -7,7 +7,6 @@ function playBeep(freq, duration) {
 
   oscillator.type = "square"; // Nokia-style
   oscillator.frequency.value = freq;
-
   gainNode.gain.value = 0.1;
 
   oscillator.connect(gainNode);
@@ -16,16 +15,24 @@ function playBeep(freq, duration) {
   oscillator.start();
   oscillator.stop(audioCtx.currentTime + duration);
 }
+
 function moveBeep() {
-  playBeep(600, 0.03); // short click
+  playBeep(600, 0.03);
 }
 
 function eatBeep() {
-  playBeep(900, 0.08); // higher tone
+  playBeep(900, 0.08);
 }
 
 function gameOverBeep() {
-  playBeep(200, 0.5); // low long tone
+  playBeep(200, 0.5);
+}
+
+// 🔓 Unlock audio (browser requirement)
+function unlockAudio() {
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
 }
 
 window.onload = () => {
@@ -47,13 +54,19 @@ let score = 0;
 document.addEventListener("keydown", keyControl);
 
 function keyControl(e) {
+  unlockAudio();
+
   if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
   if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
   if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
   if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+
+  moveBeep();
 }
 
 function changeDir(dir) {
+  unlockAudio();
+
   if (dir === "UP" && direction !== "DOWN") direction = "UP";
   if (dir === "DOWN" && direction !== "UP") direction = "DOWN";
   if (dir === "LEFT" && direction !== "RIGHT") direction = "LEFT";
@@ -61,7 +74,6 @@ function changeDir(dir) {
 
   moveBeep();
 }
-
 
 function randomFood() {
   return {
@@ -73,13 +85,13 @@ function randomFood() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Snake
+  // Draw snake
   snake.forEach((s, i) => {
     ctx.fillStyle = i === 0 ? "#0f380f" : "#306230";
     ctx.fillRect(s.x, s.y, box, box);
   });
 
-  // Food
+  // Draw food
   ctx.fillStyle = "#0f380f";
   ctx.fillRect(food.x, food.y, box, box);
 
@@ -97,19 +109,19 @@ function draw() {
     snake.some((s, i) => i !== 0 && s.x === head.x && s.y === head.y)
   ) {
     gameOverBeep();
-
     setTimeout(() => {
       alert("Game Over! Score: " + score);
       location.reload();
     }, 500);
-
-    return; 
+    return;
   }
 
   snake.unshift(head);
 
+  // 🍎 Food eaten
   if (head.x === food.x && head.y === food.y) {
     score++;
+    eatBeep();
     document.getElementById("score").innerText = score;
     food = randomFood();
   } else {
