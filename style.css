@@ -2,6 +2,7 @@ body {
   background: #222;
   font-family: monospace;
   margin: 0;
+  height: 100vh;
 }
 
 
@@ -98,11 +99,10 @@ canvas {
     visibility: hidden;
   }
 }
-
-.center-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+#loading-screen,
+.game-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
