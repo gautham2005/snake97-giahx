@@ -39,6 +39,7 @@ window.onload = () => {
   setTimeout(() => {
     document.getElementById("loading-screen").style.display = "none";
     document.querySelector(".game-container").classList.remove("hidden");
+    gameLoop = setInterval(draw, 120);
   }, 3000);
 };
 
@@ -113,6 +114,8 @@ function draw() {
       alert("Game Over! Score: " + score);
       location.reload();
     }, 500);
+    clearInterval(gameLoop);
+    gameOverBeep();
     return;
   }
 
@@ -129,4 +132,5 @@ function draw() {
   }
 }
 
-setInterval(draw, 120);
+let gameLoop;
+
