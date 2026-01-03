@@ -2,7 +2,9 @@ body {
   background: #222;
   font-family: monospace;
   margin: 0;
+  height: 100vh;
 }
+
 
 .app {
   display: flex;
@@ -96,4 +98,11 @@ canvas {
     opacity: 0;
     visibility: hidden;
   }
+}
+#loading-screen,
+.game-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
