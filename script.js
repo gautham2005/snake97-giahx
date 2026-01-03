@@ -1,3 +1,6 @@
+let gameStarted = false;
+let gameLoop;
+
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 
@@ -39,7 +42,6 @@ window.onload = () => {
   setTimeout(() => {
     document.getElementById("loading-screen").style.display = "none";
     document.querySelector(".game-container").classList.remove("hidden");
-    gameLoop = setInterval(draw, 120);
   }, 3000);
 };
 
@@ -57,6 +59,12 @@ document.addEventListener("keydown", keyControl);
 function keyControl(e) {
   unlockAudio();
 
+  // ▶ Start game on first key press
+  if (!gameStarted) {
+    gameStarted = true;
+    gameLoop = setInterval(draw, 120);
+  }
+
   if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
   if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
   if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
@@ -65,8 +73,15 @@ function keyControl(e) {
   moveBeep();
 }
 
+
 function changeDir(dir) {
   unlockAudio();
+
+  // ▶ Start game on first button press
+  if (!gameStarted) {
+    gameStarted = true;
+    gameLoop = setInterval(draw, 120);
+  }
 
   if (dir === "UP" && direction !== "DOWN") direction = "UP";
   if (dir === "DOWN" && direction !== "UP") direction = "DOWN";
@@ -76,6 +91,7 @@ function changeDir(dir) {
   moveBeep();
 }
 
+
 function randomFood() {
   return {
     x: Math.floor(Math.random() * 20) * box,
@@ -84,6 +100,7 @@ function randomFood() {
 }
 
 function draw() {
+  document.getElementById("start-text")?.remove();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw snake
@@ -109,13 +126,12 @@ function draw() {
     head.x >= canvas.width || head.y >= canvas.height ||
     snake.some((s, i) => i !== 0 && s.x === head.x && s.y === head.y)
   ) {
+    clearInterval(gameLoop);
     gameOverBeep();
     setTimeout(() => {
       alert("Game Over! Score: " + score);
       location.reload();
     }, 500);
-    clearInterval(gameLoop);
-    gameOverBeep();
     return;
   }
 
@@ -132,5 +148,5 @@ function draw() {
   }
 }
 
-let gameLoop;
+
 
