@@ -1,14 +1,11 @@
 body {
   background: #222;
   font-family: monospace;
-  margin: 0;
-}
-
-.app {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin: 0;
 }
 
 .game-container {
@@ -32,6 +29,7 @@ canvas {
 .score {
   margin: 8px 0;
   font-weight: bold;
+  color: #0f380f;
 }
 
 .controls button {
@@ -60,15 +58,13 @@ canvas {
   text-transform: uppercase;
 }
 
-/* Loading Screen */
+/* Loading Screen (classic simple) */
 #loading-screen {
   background: #9bbc0f;
   border: 8px solid #0f380f;
   width: 340px;
   padding: 40px 10px;
   text-align: center;
-  animation: fadeOut 1s ease forwards;
-  animation-delay: 2.5s;
 }
 
 .loading-logo {
@@ -89,21 +85,4 @@ canvas {
 
 .hidden {
   display: none;
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-#start-text {
-  font-size: 12px;
-  color: #0f380f;
-  margin-bottom: 8px;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
 }
